@@ -1,64 +1,119 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 # GymTrack API
 
-API REST para gestión de rutinas y seguimiento del progreso de entrenamiento, desarrollada con NestJS + Prisma + PostgreSQL.
+GymTrack es una API REST para la gestión de rutinas de entrenamiento y seguimiento del progreso del usuario. Está orientada a usuarios que desean registrar sus rutinas, ejercicios, entrenamientos realizados y métricas de rendimiento.
 
-## Stack
+## Objetivo
+
+Permitir que un usuario pueda:
+
+- registrarse e iniciar sesión
+- crear rutinas propias
+- asociar ejercicios a una rutina
+- registrar entrenamientos realizados
+- consultar métricas de progreso
+- mantener el acceso protegido por JWT y ownership por usuario
+
+## Stack tecnológico
 
 - NestJS 12
 - TypeScript
-- Prisma
-- PostgreSQL
+- Prisma ORM
+- PostgreSQL 16
 - JWT + Passport
 - bcrypt
-- class-validator + class-transformer
+- class-validator
+- class-transformer
+- @nestjs/config
 - Helmet
 - CORS
 - @nestjs/throttler
-- @nestjs/config
 
 ## Requisitos
 
 - Node.js 20+
 - pnpm
-- PostgreSQL corriendo localmente
+- Docker
+- PostgreSQL disponible localmente o via Docker Compose
 
-## Configuración
+## Instalación
 
-1. Copia `.env.example` a `.env`.
-2. Ajusta `DATABASE_URL`, `JWT_SECRET` y `JWT_REFRESH_SECRET`.
-3. Crea la base de datos PostgreSQL.
-4. Ejecuta:
+1. Cloná el repositorio
+2. Instalá dependencias:
 
 ```bash
 pnpm install
+```
+
+3. Copiá el ejemplo de variables de entorno:
+
+```bash
+cp .env.example .env
+```
+
+4. Ajustá tus variables en `.env`:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/gymtrack_db?schema=public"
+JWT_SECRET="tu_secreto_jwt"
+JWT_REFRESH_SECRET="tu_secreto_refresh"
+PORT=3000
+```
+
+5. Levantá PostgreSQL con Docker:
+
+```bash
+docker compose up -d
+```
+
+6. Ejecutá las migraciones:
+
+```bash
 pnpm exec prisma migrate dev --name init
+```
+
+7. Iniciá la API:
+
+```bash
 pnpm run start:dev
 ```
 
-## Endpoints principales
+## Estructura principal
+
+```text
+src/
+├── app.module.ts
+├── main.ts
+├── auth/
+├── users/
+├── exercises/
+├── routines/
+├── workouts/
+├── progress/
+├── prisma/
+├── common/
+└── tests/
+```
+
+## Autenticación
+
+La API usa JWT y un guard global para proteger rutas.
+
+### Endpoints públicos
+
+- POST `/api/v1/auth/register`
+- POST `/api/v1/auth/login`
+- POST `/api/v1/auth/refresh`
+
+### Endpoints protegidos
+
+- POST `/api/v1/auth/logout`
+- GET `/api/v1/users/me`
+- CRUD de rutinas
+- CRUD de ejercicios
+- CRUD de workouts
+- GET `/api/v1/progress`
+
+## Endpoints disponibles
 
 ### Auth
 
@@ -71,6 +126,14 @@ pnpm run start:dev
 
 - GET `/api/v1/users/me`
 
+### Exercises
+
+- GET `/api/v1/exercises`
+- GET `/api/v1/exercises/:id`
+- POST `/api/v1/exercises`
+- PATCH `/api/v1/exercises/:id`
+- DELETE `/api/v1/exercises/:id`
+
 ### Routines
 
 - GET `/api/v1/routines`
@@ -82,14 +145,6 @@ pnpm run start:dev
 - PATCH `/api/v1/routines/:id/exercises/:exerciseId`
 - DELETE `/api/v1/routines/:id/exercises/:exerciseId`
 
-### Exercises
-
-- GET `/api/v1/exercises`
-- GET `/api/v1/exercises/:id`
-- POST `/api/v1/exercises`
-- PATCH `/api/v1/exercises/:id`
-- DELETE `/api/v1/exercises/:id`
-
 ### Workouts
 
 - GET `/api/v1/workouts`
@@ -100,16 +155,115 @@ pnpm run start:dev
 
 - GET `/api/v1/progress`
 
+## Ejemplos de request
+
+### Registro
+
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Juan Perez",
+    "email": "juan@example.com",
+    "password": "Password123"
+  }'
+```
+
+### Login
+
+```bash
+curl -X POST http://localhost:3000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "juan@example.com",
+    "password": "Password123"
+  }'
+```
+
+### Obtener perfil del usuario
+
+```bash
+curl -X GET http://localhost:3000/api/v1/users/me \
+  -H "Authorization: Bearer <accessToken>"
+```
+
+### Crear rutina
+
+```bash
+curl -X POST http://localhost:3000/api/v1/routines \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <accessToken>" \
+  -d '{
+    "name": "Push Day",
+    "description": "Rutina de fuerza para pecho y hombros"
+  }'
+```
+
+### Crear workout
+
+```bash
+curl -X POST http://localhost:3000/api/v1/workouts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <accessToken>" \
+  -d '{
+    "routineId": "<routineId>",
+    "date": "2026-09-07",
+    "durationMinutes": 45,
+    "exercises": [
+      { "exerciseId": "<exerciseId>", "weight": 80, "repetitions": 8 },
+      { "exerciseId": "<exerciseId>", "weight": 90, "repetitions": 6 }
+    ]
+  }'
+```
+
+## Respuestas esperadas
+
+La API responde con JSON y utiliza códigos HTTP adecuados:
+
+- 200 OK
+- 201 Created
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 404 Not Found
+- 409 Conflict
+
+Nunca se devuelven passwords ni passwordHash.
+
 ## Seguridad
 
-- JWT con guard global
+La aplicación implementa:
+
+- JWT guard global
+- ownership verificado en los services
 - validación global con `ValidationPipe`
-- rate limiting con `@nestjs/throttler`
+- `whitelist` y `forbidNonWhitelisted`
 - CORS explícito
 - Helmet
-- contraseñas hasheadas con bcrypt
-- refresh token almacenado hasheado en la base de datos
+- rate limiting con `@nestjs/throttler`
+- secretos en variables de entorno
+- `.env` y archivos sensibles ignorados por Git
 
-## Nota
+## Repositorio y deploy
 
-La API sigue la idea de ownership por usuario: cada recurso asociado a un usuario solo puede ser consultado o modificado por su propietario, comprobado en el service usando el userId del JWT.
+- Repositorio: https://github.com/tu-usuario/gymtrack-api
+- Deploy: https://tu-deploy-url.example.com
+
+> Reemplazá ambos links con los valores reales del proyecto cuando estén disponibles.
+
+## Migraciones Prisma
+
+```bash
+pnpm exec prisma migrate dev --name init
+pnpm exec prisma generate
+```
+
+## Tests
+
+```bash
+pnpm test -- --run
+```
+
+## Observación de diseño
+
+La lógica de negocio se concentra en los services, mientras que los controllers se encargan de recibir la request y delegar la operación. La verificación de ownership se realiza con el `userId` obtenido desde el JWT, evitando que un usuario acceda a datos de otra persona.
