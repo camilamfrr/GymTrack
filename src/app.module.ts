@@ -16,16 +16,27 @@ import { WorkoutsModule } from './workouts/workouts.module.js';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
-    PrismaModule,
+
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 10,
+        },
+      ],
+    }),
+
     AuthModule,
-    UsersModule,
     ExercisesModule,
-    RoutinesModule,
-    WorkoutsModule,
+    PrismaModule,
     ProgressModule,
+    RoutinesModule,
+    UsersModule,
+    WorkoutsModule,
   ],
+
   controllers: [AppController],
+
   providers: [
     AppService,
     {
