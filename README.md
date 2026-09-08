@@ -172,7 +172,7 @@ La API usa JWT y un guard global para proteger rutas.
 ### Registro
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/register \
+curl -X POST https://gymtrack-api-o597.onrender.com/api/v1/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Juan Perez",
@@ -184,7 +184,7 @@ curl -X POST http://localhost:3000/api/v1/auth/register \
 ### Login
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/login \
+curl -X POST https://gymtrack-api-o597.onrender.com/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "juan@example.com",
@@ -195,14 +195,14 @@ curl -X POST http://localhost:3000/api/v1/auth/login \
 ### Obtener perfil del usuario
 
 ```bash
-curl -X GET http://localhost:3000/api/v1/users/me \
+curl -X GET https://gymtrack-api-o597.onrender.com/api/v1/users/me \
   -H "Authorization: Bearer <accessToken>"
 ```
 
 ### Crear rutina
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/routines \
+curl -X POST https://gymtrack-api-o597.onrender.com/api/v1/routines \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <accessToken>" \
   -d '{
@@ -214,7 +214,7 @@ curl -X POST http://localhost:3000/api/v1/routines \
 ### Crear workout
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/workouts \
+curl -X POST https://gymtrack-api-o597.onrender.com/api/v1/workouts \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <accessToken>" \
   -d '{
