@@ -77,6 +77,18 @@ pnpm exec prisma migrate dev --name init
 pnpm run start:dev
 ```
 
+Environment variables:
+
+Create `.env` from `.env.example` and set your values. Example variables include:
+
+```
+DATABASE_URL
+JWT_SECRET
+JWT_REFRESH_SECRET
+PORT
+CORS_ORIGIN  # comma-separated allowed origins, e.g. http://localhost:5173
+```
+
 ## Estructura principal
 
 ```text

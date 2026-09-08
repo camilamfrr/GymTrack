@@ -18,8 +18,8 @@ yarn-debug.log*
 
 # Environment variables
 .env
-.env.example
 plan_accion.md
+proyecto-4-integrartec-2026.pdf
 
 # Prisma
 /prisma/*.db
