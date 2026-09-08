@@ -1,0 +1,9 @@
+.git
+.env
+.env.local
+npm-debug.log
+pnpm-debug.log
+pnpm-store
+coverage
+.idea
+.vscode
