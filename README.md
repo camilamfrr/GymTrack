@@ -259,7 +259,7 @@ La aplicación implementa:
 ## Repositorio y deploy
 
 - Repositorio: https://github.com/tu-usuario/gymtrack-api
-- Deploy: https://tu-deploy-url.example.com
+- Deploy: https://gymtrack-api-o597.onrender.com/api
 
 > Reemplazá ambos links con los valores reales del proyecto cuando estén disponibles.
 
@@ -281,7 +281,7 @@ pnpm test -- --run
 Durante el desarrollo la documentación interaciva OpenAPI está disponible en:
 
 ```
-http://localhost:3000/api/docs
+https://gymtrack-api-o597.onrender.com/api/docs
 ```
 
 La UI expone todos los endpoints bajo `/api/v1` y soporta autenticación Bearer (JWT). Swagger se habilita automáticamente cuando `NODE_ENV` no es `production`.
