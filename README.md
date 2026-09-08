@@ -276,6 +276,17 @@ pnpm exec prisma generate
 pnpm test -- --run
 ```
 
+## Swagger (OpenAPI)
+
+Durante el desarrollo la documentación interaciva OpenAPI está disponible en:
+
+```
+http://localhost:3000/api/docs
+```
+
+La UI expone todos los endpoints bajo `/api/v1` y soporta autenticación Bearer (JWT). Swagger se habilita automáticamente cuando `NODE_ENV` no es `production`.
+
+
 ## Observación de diseño
 
 La lógica de negocio se concentra en los services, mientras que los controllers se encargan de recibir la request y delegar la operación. La verificación de ownership se realiza con el `userId` obtenido desde el JWT, evitando que un usuario acceda a datos de otra persona.
