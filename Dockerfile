@@ -18,7 +18,7 @@ RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
 
 # Copy sources and build
 COPY . .
-RUN pnpm build && pnpm exec prisma generate --schema=prisma/schema.prisma
+RUN pnpm exec prisma generate --schema=prisma/schema.prisma && pnpm build
 
 # Runtime stage
 FROM node:20-alpine AS runner
